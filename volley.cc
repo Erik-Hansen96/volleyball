@@ -1,17 +1,79 @@
 #include <iostream>
 #include <chrono>
-
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <random>
+#include <fstream>
+#include <cstdlib>
 using namespace std;
 
 //The current a.out is just for this file. 
 //I'm just compiling by using g++ volley.cc
+struct Questions{
+	string question;
+	string correctAnswer;
+	vector<string> answers;
+};
+void readJeopardy(const string fileName, vector<Questions>& questions){
+	ifstream infile(fileName);
+	if(!infile.is_open()){
+		cerr << "Error: could not open file " << fileName << endl;
+	}
+	Questions q;
+	string line;
+	int lineCount = 0;
+	//Getting the questions
+	while(getline(infile, line)){
+		if(line.empty()){continue;}
+		lineCount++;
+		//reading First line of file
+		if(lineCount % 5 == 1){
+		//	cout << line << endl;
+			replace(line.begin(), line.end(), '\n', ' ');
+			q.question = line;
+		//	cout << q.question << endl;
+		}
+		//reading second line of file the correct answer
+		else if(lineCount % 5 == 2){
+			q.correctAnswer = line;
+			q.answers.push_back(line);
+		}
+		//rest of answers
+		else{
+			q.answers.push_back(line);
+		}
+		//Checking if questions and answer blocks have been read
+		if(lineCount % 5 == 0){
+            random_device rd;
+            mt19937 g(rd());
+            shuffle(q.answers.begin(), q.answers.end(), g); //Shuffling answer vector
+			questions.push_back(q);
+			q.answers.clear();
+		}
+		
+	}
+	infile.close();
 
-
+}
 int main(){
+	vector<Questions> questions;
+	string fileName ="questions.txt";
+	readJeopardy(fileName,questions);
 	//declares timer
 	chrono::steady_clock::time_point timer_start;
 	//starts timer
 	timer_start = chrono::steady_clock::now();
+	//This will cout all of the question at once. Jeopardy.cc has a for loop that prints out one at a time and waits for a input. Input testing not fully complete but mostly works. You can delete this if you want.
+/*	for(const auto& q: questions){
+		cout << "==========QUESTION===========" << endl;
+		cout << q.question << endl;
+		cout << "=============================" << endl;
+		for(size_t i =0; i < q.answers.size(); i++){
+			cout << i+1 << ".) " << q.answers[i] << endl;
+			}
+			//
+	}*/
 
 	string question = "What is 2+2?";
 	string answers = "1) 1\n2) 2\n3) 3\n4) 4";
