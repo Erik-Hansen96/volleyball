@@ -6,6 +6,7 @@
 #include <random>
 #include <fstream>
 #include <cstdlib>
+#include <unistd.h>
 using namespace std;
 
 //The current a.out is just for this file. 
@@ -57,9 +58,11 @@ void readJeopardy(const string fileName, vector<Questions>& questions){
 
 }
 int main(){
+	srand(time(NULL));
 	vector<Questions> questions;
 	string fileName ="questions.txt";
 	readJeopardy(fileName,questions);
+	random_shuffle(questions.begin(), questions.end());
 	//declares timer
 	chrono::steady_clock::time_point timer_start;
 	//starts timer
