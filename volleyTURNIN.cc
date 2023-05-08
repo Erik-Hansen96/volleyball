@@ -12,6 +12,7 @@ using namespace std;
 //The current a.out is just for this file. 
 //I'm just compiling by using g++ volley.cc
 int main(){
+	string question = "What is 2+2?";
 	string answers = "1) 1\n2) 2\n3) 3\n4) 4";
 	int correctAnswer = 4;
 	//declares time passed variable
