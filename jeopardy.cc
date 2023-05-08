@@ -1,6 +1,8 @@
 #include "/public/colors.h"
 #include "/public/read.h"
 #include <iostream>
+#include <iomanip>
+#include <chrono>
 #include <vector>
 #include <string>
 #include <fstream>
@@ -23,6 +25,7 @@ int main(){
 	Questions q;
 	string line;
 	int lineCount = 0;
+
 	//Getting the questions
 	while(getline(infile, line)){
 		if(line.empty()){continue;}
@@ -59,18 +62,23 @@ int main(){
 	int playerOne = 0;
 	int playerTwo = 0;
 	system("clear"); 
+
+	chrono::duration<float> time_passed;
+	chrono::duration<float> prevTime = chrono::seconds(100000);;
 	//Input testing not fully complete but mostly works. 
 	for(const auto& q : questions){
+		chrono::steady_clock::time_point timer_start;
 		system("clear");
-		if(playerOne == 10 or playerTwo == 10){
-			break;
-		}
-
-		cout << endl;
-		cout << endl;
 		cout << BOLDYELLOW << "SCORE \n" 
 			<< "Player 1: " << playerOne
 			<<" Player 2: " << playerTwo << RESET << endl;
+		cout << endl;
+		//"prevTime" is set to 100000 before the loop (just a random number) 
+		//if its equal to that, then dont display a time cuz that means its first persons turn
+		//otherwise display how long the last person took to answer
+		if(prevTime != chrono::seconds(100000)){
+			cout << BOLDYELLOW << "YOU HAVE " << setprecision(2) << prevTime.count() << " SECONDS TO ANSWER." << RESET << endl;
+		}
 		cout << endl;
 		cout << endl;	
 		cout <<BOLDBLUE << "==========QUESTION===========" <<RESET<< endl;
@@ -83,12 +91,27 @@ int main(){
 		cout << endl;
 		cout <<BOLDMAGENTA<< "Player " <<(playerTurn ? 1 : 2) << " turn." << RESET<< endl;
 		cout <<BOLDYELLOW << "Enter a choice from 1-4: " << RESET << endl;
+
+		//Start timer
+		timer_start = chrono::steady_clock::now();
+		cout << endl;
+		//take answer
 		cin >> choice;
+		//End timer
+		time_passed = chrono::steady_clock::now() - timer_start;
+		//if we're over the prevTime, break;
+		if(time_passed > prevTime){
+			cout << BOLDRED << "You ran out of time!\n" << RESET << endl;
+			sleep(1);
+			break;
+		}
+
 		if(choice >=1 and choice <= 4){
 			string userAnswer = q.answers[choice-1];//Getting answer from user choice
 			if(userAnswer == q.correctAnswer){
 				cout <<BOLDGREEN << "Correct!\n" << RESET<< endl;
-				if(playerTurn){//If true its player one turn else player two turn;
+				if(userAnswer == q.correctAnswer){
+				//If true its player one turn else player two turn;
 					playerOne++;
 				}
 				else { 
@@ -98,6 +121,8 @@ int main(){
 			else{
 				cout << BOLDRED << "Incorrect!\n" << RESET << endl;
 				cout << BOLDGREEN <<"Correct answer: " <<RESET << " ' "<< q.correctAnswer << " ' " <<endl;
+				sleep(1);
+				break;
 			}
 		}
 		//If choice is not a int for 1-4
@@ -114,11 +139,12 @@ int main(){
 		cin.clear(); //clear the cin.
 		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //discards remaining input
 		system("clear");
+		prevTime = time_passed;
 	}
 	//END OF GAME
 	system("clear");
-	if(playerOne == 10) cout << "Player 1 is the WINNER!" << endl;
-	else { cout << "Player 2 is the WINNER!" << endl;}
+	if(playerTurn) cout << BOLDGREEN << "Player 2 is the WINNER!" << RESET << endl;
+	else cout << BOLDGREEN << "Player 1 is the WINNER!" << RESET << endl;
 }
 
 
