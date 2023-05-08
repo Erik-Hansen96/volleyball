@@ -110,7 +110,7 @@ int main(){
 			string userAnswer = q.answers[choice-1];//Getting answer from user choice
 			if(userAnswer == q.correctAnswer){
 				cout <<BOLDGREEN << "Correct!\n" << RESET<< endl;
-				if(userAnswer == q.correctAnswer){
+				if(playerTurn){
 				//If true its player one turn else player two turn;
 					playerOne++;
 				}
