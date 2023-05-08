@@ -64,9 +64,9 @@ int main(){
 	readJeopardy(fileName,questions);
 	random_shuffle(questions.begin(), questions.end());
 	//declares timer
-	chrono::steady_clock::time_point timer_start;
+	//chrono::steady_clock::time_point timer_start;
 	//starts timer
-	timer_start = chrono::steady_clock::now();
+	//timer_start = chrono::steady_clock::now();
 	//This will cout all of the question at once. Jeopardy.cc has a for loop that prints out one at a time and waits for a input. Input testing not fully complete but mostly works. You can delete this if you want.
 /*	for(const auto& q: questions){
 		cout << "==========QUESTION===========" << endl;
@@ -83,14 +83,21 @@ int main(){
 	int correctAnswer = 4;
 	//declares time passed variable
 	chrono::duration<float> time_passed;
+	chrono::duration<float> prevTime = chrono::seconds(1000000);
 
 	int playerSwitcher = -1;
 	int playerTurn = 1;
 	int winner = 0;
 
 	while(true){
+	system("clear");
+	chrono::steady_clock::time_point timer_start;
+	timer_start = chrono::steady_clock::now();
 		//playerSwitcher starts as -1, 
 		//but each loop changes its sign
+		if(prevTime != chrono::seconds(1000000)){
+			cout << "You have " << prevTime.count() << " seconds to answer." << endl;
+		}
 		playerSwitcher *= -1;
 		//if its -1, then its player twos turn
 		if(playerSwitcher < 0) playerTurn = 2;
@@ -100,7 +107,7 @@ int main(){
 		
 		cout << "\nPLAYER " << playerTurn << endl; 
 		cout << question << endl;
-		cout << answers << endl;
+		cout << answers << endl << "\n>";
 
 		int choice;
 		cin >> choice;
@@ -112,14 +119,15 @@ int main(){
 		//this defines the time_passed variable and figures out how much time has passed.
 		time_passed = chrono::steady_clock::now() - timer_start;
 		//if we're over the timelimit, break;
-		if(time_passed > chrono::seconds(5)){
+		if(time_passed > prevTime){
 			cout << "\nYou ran out of time!" << endl;
 			break;
 		}
+		prevTime = time_passed;
 	}
 	//it only breaks on the loser's turn
 	//so this declares the other person the winner.
 	if(playerSwitcher < 0) winner = 1;
 	else winner = 2;
-	cout << "Player " << winner << " wins!" << endl;
+	cout << "Player " << winner << " wins!\n" << endl;
 }
