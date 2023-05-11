@@ -15,20 +15,39 @@ void printMap(vector<vector<char>> grid){
 		cout << endl;
 	}
 }
-void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2){
-	cout << "  A B C D E F G H I J \t\t\t\tA B C D E F G H I J" << endl;
+void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2, bool display1, bool display2){
 	int numCol = 0;
-	int numCol2 = 0;
-	for(const auto &row : grid){
-		cout << numCol++ << " ";
-		for(const auto &col : row){
-			cout << col << " ";
+	if(display1){
+		for(const auto &row : grid){
+			numCol++;
+			for(const auto &col : row){
+				cout << col << " ";
+			}
+			cout << "\t\t\t";
+			if(display2){
+				for(const auto &col : grid2.at(numCol-1)){
+					cout << col << " ";
+				}
+			}
+			cout << endl;
 		}
-		cout << "\t\t\t\t";
-		for(const auto &col : grid2.at(numCol-1)){
-			cout << col << " ";
+	} else if(display2) {
+		for(const auto &row : grid){
+			numCol++;
+			for(const auto &col : row){
+				cout << " " << " ";
+			}
+			cout << "\t\t\t";
+			if(display2){
+				for(const auto &col : grid2.at(numCol-1)){
+					cout << col << " ";
+				}
+			}
+			cout << endl;
 		}
-		cout << endl;
+
+
+
 	}
 }
 void printShips(vector<vector<char>> shipBank){
@@ -42,6 +61,7 @@ void printShips(vector<vector<char>> shipBank){
 void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, int playerTurn){
 	string ships = "CBBSSSPPPP";
 	while(true){
+		system("clear");
 		cout << "PLAYER " << playerTurn << endl << endl;
 		printMap(playerMap);
 		cout << endl;
@@ -59,72 +79,131 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		if(shipChoice == 'P') shipSize = 2;
 
 		if(ships.find(shipChoice) != string::npos){
-			ships.erase(ships.find(shipChoice), 1);
 		} else {
 			cout << "You have no more " << shipChoice << " ships!" << endl;
 			cout << "Please pick another" << endl;
-			sleep(1);
+			sleep(3);
 			system("clear");
 			continue;
-		}
-		cout << ships << endl;
-		for(size_t i = 0; i < shipBank.at(0).size(); i++){
-			if(shipBank.at(i).at(0) == shipChoice){
-				for(int j = 0; j < 5; j++){ 
-					//printShips(shipBank);
-					shipBank.at(j).erase(shipBank.at(j).begin());
-				}
-			break;
-			}
 		}
 
 		cout << "Where would do you want to place your ship?" << endl;
 		cout << "Enter a letter and number (like A5)" << endl;
 		char letter;
-		int num;
+		size_t num;
 		cin >> letter;
 		cin >> num;
 		letter = toupper(letter);
-		int letterCord = letter - 65;
+		size_t letterCord = letter - 65;
 		system("clear");
+		bool display1 = true;
+		bool display2 = true;
+		bool display3 = true;
+		bool display4 = true;
+
 		vector<vector<char>> or1 = playerMap;
 		for(int i = 0; i < shipSize; i++){
-			or1.at(num).at(letterCord+i) = shipChoice;
+			if(num < or1.size() and letterCord+i < or1.at(num).size() and or1.at(num).at(letterCord+i) == '#' ){
+				or1.at(num).at(letterCord+i) = shipChoice;
+			} else {
+				display1 = false;
+				break;
+			}
 		}
-	//	cout << "1)\n" << endl;
-	//	printMap(or1);
 
 		vector<vector<char>> or2 = playerMap;
 		for(int i = 0; i < shipSize; i++){
-			or2.at(num).at(letterCord-i) = shipChoice;
-		}
-	//	cout << "2)\n" << endl;
-	//	printMap(or2);
+			if(num < or2.size() and letterCord-i < or2.at(num).size() and or2.at(num).at(letterCord-i) == '#'){
+				or2.at(num).at(letterCord-i) = shipChoice;
+			} else {
+				display2 = false;
+				break;
+			}
+		}		
 		vector<vector<char>> or3 = playerMap;
 		for(int i = 0; i < shipSize; i++){
-			or3.at(num+i).at(letterCord) = shipChoice;
+			if(num+i < or3.size() and letterCord < or3.at(num).size() and or3.at(num+i).at(letterCord) == '#'){
+				or3.at(num+i).at(letterCord) = shipChoice;
+			} else {
+				display3 = false;
+				break;
+			}
 		}
-	//	cout << "3)\n" << endl;
-	//	printMap(or3);
 		vector<vector<char>> or4 = playerMap;
 		for(int i = 0; i < shipSize; i++){
-			or4.at(num-i).at(letterCord) = shipChoice;
+			if(num-i < or4.size() and letterCord < or4.at(num).size() and or4.at(num-i).at(letterCord) == '#'){
+				or4.at(num-i).at(letterCord) = shipChoice;
+			} else { 
+				display4 = false;
+				break;
+			}
 		}
-	//	cout << "4)\n" << endl;
-	//	printMap(or4);
-		cout << "1)\t\t\t\t\t      2)\n" << endl;
-		printOrient(or1, or2);
-		cout << "\n\n\n\n";
-		cout << "3)\t\t\t\t\t      4)\n" << endl;
-		printOrient(or3, or4);
-		cout << endl;
+		if(!display1 and !display2 and !display3 and !display4){
+			cout << "That ship doesn't fit there!" << endl;
+			sleep(3);
+			continue;
+		}
 
 		int orientation;
-		cout << "Choose an orientation (1,2,3,4)" << endl;
+		cout << "1)\t\t\t\t       2)\n" << endl;
+		printOrient(or1, or2, display1, display2);
+		
+		cout << "\n\n\n\n";
+		cout << "3)\t\t\t\t       4)\n" << endl;
+		printOrient(or3, or4, display3, display4);
+		cout << "\nChoose an orientation (1,2,3,4)" << endl;
 		cin >> orientation;
-//		playerMap =;
-		system("clear");
-	
+		if(orientation != 1 and orientation != 2 and orientation != 3 and orientation != 4){
+			cout << "Invalid choice!" << endl;
+			continue;
+		}
+		if(orientation == 1){
+			if(!display1){
+				cout << "Invalid choice!" << endl;
+				sleep(2);
+				continue;
+			} else {
+				playerMap = or1;
+			}
+		}
+		if(orientation == 2){
+			if(!display2){
+				cout << "Invalid choice!" << endl;
+				sleep(2);
+				continue;
+			} else {
+				playerMap = or2;
+			}
+		}
+		if(orientation == 3){
+			if(!display3){
+				cout << "Invalid choice!" << endl;
+				sleep(2);
+				continue;
+			} else {
+				playerMap = or3;
+			}
+		}
+		if(orientation == 4){
+			if(!display4){
+				cout << "Invalid choice!" << endl;
+				sleep(2);
+				continue;
+			} else {
+				playerMap = or4;
+			}
+		}
+		for(size_t i = 0; i < shipBank.at(0).size(); i++){
+			if(shipBank.at(0).at(i) == shipChoice){
+				for(int j = 0; j < 5; j++){ 
+					shipBank.at(j).at(i) = ' ';
+				}
+				break;
+			}
+		}
+		ships.erase(ships.find(shipChoice), 1);
+
+
 		if(ships.empty()) break;
 	}
 }
@@ -132,18 +211,6 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 int main(){
 	int winner = 1;
 	vector<vector<char>> grid(10, vector<char>(10, '#'));
-	system("clear");
-	/*
-	cout << "  A B C D E F G H I J" << endl;
-	int numCol = 0;
-	for(const auto &row : grid){
-		cout << numCol++ << " ";
-		for(const auto &col : row){
-			cout << col << " ";
-		}
-		cout << endl;
-	}
-	*/
 //	printMap(grid);
 //	cout << endl;
 		vector<vector<char>> player1Map(10, vector<char>(10, '#'));
