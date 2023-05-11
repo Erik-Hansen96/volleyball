@@ -213,8 +213,8 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 
 int main(){
 	int winner = 1;
-	vector<vector<char>> p1ocean(10, vector<char>(10, '#'));
-	vector<vector<char>> p2ocean(10, vector<char>(10, '#'));
+	vector<vector<char>> player1Ocean(10, vector<char>(10, '#'));
+	vector<vector<char>> player2Ocean(10, vector<char>(10, '#'));
 	vector<vector<char>> player1Map(10, vector<char>(10, '#'));
 	vector<vector<char>> player2Map(10, vector<char>(10, '#'));	
 	vector<vector<char>> shipBank1 = {
@@ -232,10 +232,66 @@ int main(){
 	addShip(player2Map, shipBank2, 2);
 	cout << "LETS FIGHT!!" << endl;
 	sleep(3);
+	bool playerTurn = true;
 	while(true){	
 		system("clear");
-		printMap(p1ocean);
-		printMap(player1Map);
+		if(playerTurn){
+			cout << "PLAYER 1\n" << endl;	
+			printMap(player1Ocean);
+			cout << endl;
+			printMap(player1Map);
+			cout << endl;
+
+		} else {
+			cout << "PLAYER 2\n" << endl;
+			printMap(player2Ocean);
+			cout << endl;
+			printMap(player2Map);
+			cout << endl;
+		}
+		cout << "\nEnter a letter and number to strike!" << endl;
+		char letter;
+		size_t num;
+		cin >> letter;
+		cin >> num;
+		letter = toupper(letter);
+		size_t letterCord = letter - 65;
+		if(playerTurn){
+			if(num >= player2Map.size() or letterCord >= player2Map.at(num).size()){
+				cout << "Invalid input!" << endl;
+				sleep(3);
+				continue;
+			}
+			if(player2Map.at(num).at(letterCord) != '#'){
+				cout << "Hit!" << endl;
+				player1Ocean.at(num).at(letterCord) = 'X';
+				player2Map.at(num).at(letterCord) = 'X';
+				sleep(3);
+			} else {
+				cout << "Miss!" << endl;
+				player1Ocean.at(num).at(letterCord) = 'O';
+				player2Map.at(num).at(letterCord) = 'O';
+				sleep(3);
+			}
+		} else {
+			if(num >= player1Map.size() or letterCord >= player1Map.at(num).size()){
+				cout << "Invalid input!" << endl;
+				sleep(3);
+				continue;
+			}
+			if(player1Map.at(num).at(letterCord) != '#'){
+				cout << "Hit!" << endl;
+				player2Ocean.at(num).at(letterCord) = 'X';
+				player1Map.at(num).at(letterCord) = 'X';
+				sleep(3);
+			} else {
+				cout << "Miss!" << endl;
+				player2Ocean.at(num).at(letterCord) = 'O';
+				player1Map.at(num).at(letterCord) = 'O';
+				sleep(3);
+			}
+		}
+		playerTurn = !playerTurn;
 	}
 	cout << "swag" << endl;
 }
