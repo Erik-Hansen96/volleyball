@@ -204,48 +204,38 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		ships.erase(ships.find(shipChoice), 1);
 
 
-		if(ships.empty()) break;
+		if(ships.empty()){
+			system("clear");
+			break;
+		}
 	}
 }
 
 int main(){
 	int winner = 1;
-	vector<vector<char>> grid(10, vector<char>(10, '#'));
-//	printMap(grid);
-//	cout << endl;
-		vector<vector<char>> player1Map(10, vector<char>(10, '#'));
-		vector<vector<char>> player2Map(10, vector<char>(10, '#'));
-//		cout << "Your battleships: " << endl << endl;
-//		printMap(player1Map);
-		
-//		cout << "Player " << winner << " place your ships\n" << endl;
-		vector<vector<char>> shipBank1 = {
-        	{'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
-        	{'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
-        	{'C', 'B', 'B', 'S', 'S', 'S', ' ', ' ', ' ', ' '},
-        	{'C', 'B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        	{'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
-    	};
-		vector<vector<char>> shipBank2 = {
-        	{'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
-        	{'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
-        	{'C', 'B', 'B', 'S', 'S', 'S', ' ', ' ', ' ', ' '},
-        	{'C', 'B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        	{'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
-    	};
-		addShip(player1Map, shipBank1, 1);
-		addShip(player2Map, shipBank2, 2);
-		/*
-		cout << endl;
-		cout << "Place your ship!" << endl;	
-		cout << "Enter a letter and number (like A5)" << endl;
-		char letter;
-		int num;
-		cin >> letter;
-		cin >> num;
-		letter = toupper(letter);
-		int letterCord = letter - letter;
-*/
-
+	vector<vector<char>> p1ocean(10, vector<char>(10, '#'));
+	vector<vector<char>> p2ocean(10, vector<char>(10, '#'));
+	vector<vector<char>> player1Map(10, vector<char>(10, '#'));
+	vector<vector<char>> player2Map(10, vector<char>(10, '#'));	
+	vector<vector<char>> shipBank1 = {
+        {'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
+        {'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
+        {'C', 'B', 'B', 'S', 'S', 'S', ' ', ' ', ' ', ' '},
+        {'C', 'B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+    };
+	vector<vector<char>> shipBank2 = shipBank1;
+	addShip(player1Map, shipBank1, 1);
+	cout << "You've added all your ships!" << endl;
+	cout << "\nNext player's turn to add ships" << endl;
+	sleep(3);
+	addShip(player2Map, shipBank2, 2);
+	cout << "LETS FIGHT!!" << endl;
+	sleep(3);
+	while(true){	
+		system("clear");
+		printMap(p1ocean);
+		printMap(player1Map);
+	}
 	cout << "swag" << endl;
 }
