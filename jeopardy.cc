@@ -68,7 +68,7 @@ int main(){
 
 	chrono::duration<float> time_passed;
 	chrono::duration<float> prevTime = chrono::seconds(100000);;
-	//Input testing not fully complete but mostly works. 
+	
 	for(const auto& q : questions){
 		chrono::steady_clock::time_point timer_start;
 		system("clear");
