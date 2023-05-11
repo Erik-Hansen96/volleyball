@@ -2,13 +2,16 @@
 #include <vector>
 #include <cctype>
 #include <unistd.h>
+#include "/public/colors.h"
+#include "/public/read.h"
+#include <cstdlib>
 using namespace std;
 
 void printMap(vector<vector<char>> grid){
-	cout << "  A B C D E F G H I J" << endl;
+cout <<BOLDMAGENTA<< "  A B C D E F G H I J" <<RESET<< endl;
 	int numCol = 0;
 	for(const auto &row : grid){
-		cout << numCol++ << " ";
+		cout <<BOLDBLUE<< numCol++ <<RESET<< " ";
 		for(const auto &col : row){
 			cout << col << " ";
 		}
@@ -62,13 +65,13 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 	string ships = "CBBSSSPPPP";
 	while(true){
 		system("clear");
-		cout << "PLAYER " << playerTurn << endl << endl;
+		cout <<BOLDYELLOW << "PLAYER " << playerTurn <<RESET<< endl << endl;
 		printMap(playerMap);
 		cout << endl;
 		printShips(shipBank);
 		cout << endl;
-		cout << "Place your ships!" << endl;
-		cout << "Select a ship to add! (Enter C, B, S, or P)\n" << endl;
+		cout <<BOLDGREEN<< "Place your ships!" << RESET<< endl;
+		cout <<BOLDGREEN<< "Select a ship to add! (Enter C, B, S, or P)\n" <<RESET<< endl;
 		char shipChoice;
 		int shipSize;
 		cin >> shipChoice;
@@ -80,15 +83,15 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 
 		if(ships.find(shipChoice) != string::npos){
 		} else {
-			cout << "You have no more " << shipChoice << " ships!" << endl;
-			cout << "Please pick another" << endl;
+			cout <<BOLDRED<< "You have no more " << shipChoice << " ships!" <<RESET<< endl;
+			cout <<BOLDWHITE<< "Please pick another" <<RESET<< endl;
 			sleep(3);
 			system("clear");
 			continue;
 		}
 
-		cout << "Where would do you want to place your ship?" << endl;
-		cout << "Enter a letter and number (like A5)" << endl;
+		cout <<BOLDGREEN<< "Where would do you want to place your ship?" <<RESET<< endl;
+		cout <<BOLDYELLOW<<"Enter a letter and number (like A5)" <<RESET<< endl;
 		char letter;
 		size_t num;
 		cin >> letter;
@@ -139,27 +142,27 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 			}
 		}
 		if(!display1 and !display2 and !display3 and !display4){
-			cout << "That ship doesn't fit there!" << endl;
+			cout <<BOLDRED<< "That ship doesn't fit there!" <<RESET<< endl;
 			sleep(3);
 			continue;
 		}
 
 		int orientation;
-		cout << "1)\t\t\t\t       2)\n" << endl;
+		cout <<BOLDCYAN<< "1)\t\t\t\t       2)\n" << endl;
 		printOrient(or1, or2, display1, display2);
 		
 		cout << "\n\n\n\n";
-		cout << "3)\t\t\t\t       4)\n" << endl;
+		cout << "3)\t\t\t\t       4)\n" <<RESET<< endl;
 		printOrient(or3, or4, display3, display4);
-		cout << "\nChoose an orientation (1,2,3,4)" << endl;
+		cout <<BOLDGREEN<< "\nChoose an orientation (1,2,3,4)" <<RESET<< endl;
 		cin >> orientation;
 		if(orientation != 1 and orientation != 2 and orientation != 3 and orientation != 4){
-			cout << "Invalid choice!" << endl;
+			cout <<BOLDRED<< "Invalid choice!" <<RESET<< endl;
 			continue;
 		}
 		if(orientation == 1){
 			if(!display1){
-				cout << "Invalid choice!" << endl;
+				cout <<BOLDRED<< "Invalid choice!" <<RESET<< endl;
 				sleep(2);
 				continue;
 			} else {
@@ -168,7 +171,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		}
 		if(orientation == 2){
 			if(!display2){
-				cout << "Invalid choice!" << endl;
+				cout <<BOLDRED<< "Invalid choice!" <<RESET<< endl;
 				sleep(2);
 				continue;
 			} else {
@@ -177,7 +180,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		}
 		if(orientation == 3){
 			if(!display3){
-				cout << "Invalid choice!" << endl;
+				cout <<BOLDRED<< "Invalid choice!" <<RESET<< endl;
 				sleep(2);
 				continue;
 			} else {
@@ -186,7 +189,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		}
 		if(orientation == 4){
 			if(!display4){
-				cout << "Invalid choice!" << endl;
+				cout <<BOLDRED<< "Invalid choice!" <<RESET<< endl;
 				sleep(2);
 				continue;
 			} else {
@@ -212,6 +215,10 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 }
 
 int main(){
+	system("clear");
+	system("figlet -f big -c WELCOME TO BATTLESHIP!");
+	sleep(5);
+	system("clear");
 	int winner = 1;
 	vector<vector<char>> player1Ocean(10, vector<char>(10, '#'));
 	vector<vector<char>> player2Ocean(10, vector<char>(10, '#'));
@@ -226,30 +233,31 @@ int main(){
     };
 	vector<vector<char>> shipBank2 = shipBank1;
 	addShip(player1Map, shipBank1, 1);
-	cout << "You've added all your ships!" << endl;
-	cout << "\nNext player's turn to add ships" << endl;
+	cout <<BOLDGREEN<< "You've added all your ships!" << endl;
+	cout << "\nNext player's turn to add ships" <<RESET<< endl;
 	sleep(3);
 	addShip(player2Map, shipBank2, 2);
-	cout << "LETS FIGHT!!" << endl;
+	//cout << "LETS FIGHT!!" << endl;
+	system("figlet -f big LETS FIGHT!!");
 	sleep(3);
 	bool playerTurn = true;
 	while(true){	
 		system("clear");
 		if(playerTurn){
-			cout << "PLAYER 1\n" << endl;	
+			cout <<BOLDYELLOW<< "PLAYER 1\n" <<RESET<< endl;	
 			printMap(player1Ocean);
 			cout << endl;
 			printMap(player1Map);
 			cout << endl;
 
 		} else {
-			cout << "PLAYER 2\n" << endl;
+			cout <<BOLDYELLOW<< "PLAYER 2\n" <<RESET<< endl;
 			printMap(player2Ocean);
 			cout << endl;
 			printMap(player2Map);
 			cout << endl;
 		}
-		cout << "\nEnter a letter and number to strike!" << endl;
+		cout <<BOLDYELLOW<< "\nEnter a letter and number to strike!" <<RESET<< endl;
 		char letter;
 		size_t num;
 		cin >> letter;
@@ -258,34 +266,34 @@ int main(){
 		size_t letterCord = letter - 65;
 		if(playerTurn){
 			if(num >= player2Map.size() or letterCord >= player2Map.at(num).size()){
-				cout << "Invalid input!" << endl;
+				cout <<BOLDRED<< "Invalid input!" <<RESET<< endl;
 				sleep(3);
 				continue;
 			}
 			if(player2Map.at(num).at(letterCord) != '#'){
-				cout << "Hit!" << endl;
+				cout <<BOLDCYAN<< "Hit!" <<RESET<< endl;
 				player1Ocean.at(num).at(letterCord) = 'X';
 				player2Map.at(num).at(letterCord) = 'X';
 				sleep(3);
 			} else {
-				cout << "Miss!" << endl;
+				cout <<BOLDRED<< "Miss!" <<RESET<< endl;
 				player1Ocean.at(num).at(letterCord) = 'O';
 				player2Map.at(num).at(letterCord) = 'O';
 				sleep(3);
 			}
 		} else {
 			if(num >= player1Map.size() or letterCord >= player1Map.at(num).size()){
-				cout << "Invalid input!" << endl;
+				cout <<BOLDRED<< "Invalid input!" <<RESET<< endl;
 				sleep(3);
 				continue;
 			}
 			if(player1Map.at(num).at(letterCord) != '#'){
-				cout << "Hit!" << endl;
+				cout <<BOLDCYAN<< "Hit!" <<RESET<< endl;
 				player2Ocean.at(num).at(letterCord) = 'X';
 				player1Map.at(num).at(letterCord) = 'X';
 				sleep(3);
 			} else {
-				cout << "Miss!" << endl;
+				cout <<BOLDRED<< "Miss!" <<RESET<< endl;
 				player2Ocean.at(num).at(letterCord) = 'O';
 				player1Map.at(num).at(letterCord) = 'O';
 				sleep(3);
