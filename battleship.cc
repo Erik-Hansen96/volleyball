@@ -15,6 +15,22 @@ void printMap(vector<vector<char>> grid){
 		cout << endl;
 	}
 }
+void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2){
+	cout << "  A B C D E F G H I J \t\t\t\tA B C D E F G H I J" << endl;
+	int numCol = 0;
+	int numCol2 = 0;
+	for(const auto &row : grid){
+		cout << numCol++ << " ";
+		for(const auto &col : row){
+			cout << col << " ";
+		}
+		cout << "\t\t\t\t";
+		for(const auto &col : grid2.at(numCol-1)){
+			cout << col << " ";
+		}
+		cout << endl;
+	}
+}
 void printShips(vector<vector<char>> shipBank){
 	for(const auto &row : shipBank){
 		for(const auto &col : row){
@@ -34,8 +50,13 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		cout << "Place your ships!" << endl;
 		cout << "Select a ship to add! (Enter C, B, S, or P)\n" << endl;
 		char shipChoice;
+		int shipSize;
 		cin >> shipChoice;
 		shipChoice = toupper(shipChoice);
+		if(shipChoice == 'C') shipSize = 5;
+		if(shipChoice == 'B') shipSize = 4;
+		if(shipChoice == 'S') shipSize = 3;
+		if(shipChoice == 'P') shipSize = 2;
 
 		if(ships.find(shipChoice) != string::npos){
 			ships.erase(ships.find(shipChoice), 1);
@@ -65,15 +86,44 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		cin >> num;
 		letter = toupper(letter);
 		int letterCord = letter - 65;
+		system("clear");
 		vector<vector<char>> or1 = playerMap;
-		vector<vector<char>> or2 = playerMap;
-		vector<vector<char>> or3 = playerMap;
-		vector<vector<char>> or4 = playerMap;
-		cout << num << letterCord << endl;
-		for(int i = 0; i < 5; i++){
-			playerMap.at(num).at(letterCord) = shipChoice;
+		for(int i = 0; i < shipSize; i++){
+			or1.at(num).at(letterCord+i) = shipChoice;
 		}
-	//	system("clear");
+	//	cout << "1)\n" << endl;
+	//	printMap(or1);
+
+		vector<vector<char>> or2 = playerMap;
+		for(int i = 0; i < shipSize; i++){
+			or2.at(num).at(letterCord-i) = shipChoice;
+		}
+	//	cout << "2)\n" << endl;
+	//	printMap(or2);
+		vector<vector<char>> or3 = playerMap;
+		for(int i = 0; i < shipSize; i++){
+			or3.at(num+i).at(letterCord) = shipChoice;
+		}
+	//	cout << "3)\n" << endl;
+	//	printMap(or3);
+		vector<vector<char>> or4 = playerMap;
+		for(int i = 0; i < shipSize; i++){
+			or4.at(num-i).at(letterCord) = shipChoice;
+		}
+	//	cout << "4)\n" << endl;
+	//	printMap(or4);
+		cout << "1)\t\t\t\t\t      2)\n" << endl;
+		printOrient(or1, or2);
+		cout << "\n\n\n\n";
+		cout << "3)\t\t\t\t\t      4)\n" << endl;
+		printOrient(or3, or4);
+		cout << endl;
+
+		int orientation;
+		cout << "Choose an orientation (1,2,3,4)" << endl;
+		cin >> orientation;
+//		playerMap =;
+		system("clear");
 	
 		if(ships.empty()) break;
 	}
