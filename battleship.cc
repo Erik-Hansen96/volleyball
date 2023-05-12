@@ -11,13 +11,13 @@ void printMap(vector<vector<char>> grid){
 	cout <<BOLDMAGENTA<< "  A B C D E F G H I J" <<RESET<< endl;
 	int numCol = 0;
 	for(const auto &row : grid){
-		cout << BOLDCYAN << numCol++ <<RESET<< " ";
+		cout << BOLDMAGENTA << numCol++ <<RESET<< " ";
 		for(const auto &col : row){
 			if(col == 'X'){
 				cout << BOLDGREEN << col << " " << RESET;
 			} else if(col == 'O'){
 				cout << BOLDRED << col << " " << RESET;
-			} else if(col == '#') {
+			} else if(col == '~') {
 			cout << BOLDBLUE << col << " " << RESET;
 			} else {
 			cout << BOLDWHITE << col << " " << RESET;
@@ -32,7 +32,7 @@ void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2, bool dis
 		for(const auto &row : grid){
 			numCol++;
 			for(const auto &col : row){
-				if(col == '#'){
+				if(col == '~'){
 					cout << BOLDBLUE << col << " " << RESET;
 				} else {
 					cout << BOLDWHITE << col << " " << RESET;
@@ -41,7 +41,7 @@ void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2, bool dis
 			cout << "\t\t\t";
 			if(display2){
 				for(const auto &col : grid2.at(numCol-1)){
-					if(col == '#'){
+					if(col == '~'){
 						cout << BOLDBLUE << col << " " << RESET;
 					} else {
 						cout << BOLDWHITE << col << " " << RESET;
@@ -59,7 +59,7 @@ void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2, bool dis
 			cout << "\t\t\t";
 			if(display2){
 				for(const auto &col : grid2.at(numCol-1)){
-					if(col == '#'){
+					if(col == '~'){
 						cout << BOLDBLUE << col << " " << RESET;
 					} else {
 						cout << BOLDWHITE << col << " " << RESET;
@@ -88,7 +88,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		printShips(shipBank);
 		cout << endl;
 		cout <<BOLDGREEN<< "Place your ships!" << RESET<< endl;
-		cout <<BOLDGREEN<< "Select a ship to add! (Enter C, B, S, or P)\n" <<RESET<< endl;
+		cout <<BOLDGREEN<< "Select a ship to add! (Enter C, B, S, or P)" <<RESET<< endl;
 		char shipChoice;
 		int shipSize;
 		cin >> shipChoice;
@@ -100,14 +100,13 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 
 		if(ships.find(shipChoice) != string::npos){
 		} else {
-			cout <<BOLDRED<< "You have no more " << shipChoice << " ships!" <<RESET<< endl;
-			cout <<BOLDWHITE<< "Please pick another" <<RESET<< endl;
+			cout <<BOLDRED<< "Invalid Input!"  <<RESET<< endl;
 			sleep(3);
 			system("clear");
 			continue;
 		}
 
-		cout <<BOLDGREEN<< "Where would do you want to place your ship?" <<RESET<< endl;
+		cout <<BOLDGREEN<< "\nWhere would do you want to place your ship?" <<RESET<< endl;
 		cout <<BOLDYELLOW<<"Enter a letter and number (like A5)" <<RESET<< endl;
 		char letter;
 		size_t num;
@@ -123,7 +122,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 
 		vector<vector<char>> or1 = playerMap;
 		for(int i = 0; i < shipSize; i++){
-			if(num < or1.size() and letterCord+i < or1.at(num).size() and or1.at(num).at(letterCord+i) == '#' ){
+			if(num < or1.size() and letterCord+i < or1.at(num).size() and or1.at(num).at(letterCord+i) == '~' ){
 				or1.at(num).at(letterCord+i) = shipChoice;
 			} else {
 				display1 = false;
@@ -133,7 +132,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 
 		vector<vector<char>> or2 = playerMap;
 		for(int i = 0; i < shipSize; i++){
-			if(num < or2.size() and letterCord-i < or2.at(num).size() and or2.at(num).at(letterCord-i) == '#'){
+			if(num < or2.size() and letterCord-i < or2.at(num).size() and or2.at(num).at(letterCord-i) == '~'){
 				or2.at(num).at(letterCord-i) = shipChoice;
 			} else {
 				display2 = false;
@@ -142,7 +141,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		}		
 		vector<vector<char>> or3 = playerMap;
 		for(int i = 0; i < shipSize; i++){
-			if(num+i < or3.size() and letterCord < or3.at(num).size() and or3.at(num+i).at(letterCord) == '#'){
+			if(num+i < or3.size() and letterCord < or3.at(num).size() and or3.at(num+i).at(letterCord) == '~'){
 				or3.at(num+i).at(letterCord) = shipChoice;
 			} else {
 				display3 = false;
@@ -151,7 +150,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		}
 		vector<vector<char>> or4 = playerMap;
 		for(int i = 0; i < shipSize; i++){
-			if(num-i < or4.size() and letterCord < or4.at(num).size() and or4.at(num-i).at(letterCord) == '#'){
+			if(num-i < or4.size() and letterCord < or4.at(num).size() and or4.at(num-i).at(letterCord) == '~'){
 				or4.at(num-i).at(letterCord) = shipChoice;
 			} else { 
 				display4 = false;
@@ -232,15 +231,17 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 }
 
 int main(){
+	bool player1Win = false;
+	bool player2Win = false;
 	system("clear");
 	system("figlet -f big -c WELCOME TO BATTLESHIP!");
 	sleep(5);
 	system("clear");
 	int winner = 1;
-	vector<vector<char>> player1Ocean(10, vector<char>(10, '#'));
-	vector<vector<char>> player2Ocean(10, vector<char>(10, '#'));
-	vector<vector<char>> player1Map(10, vector<char>(10, '#'));
-	vector<vector<char>> player2Map(10, vector<char>(10, '#'));	
+	vector<vector<char>> player1Ocean(10, vector<char>(10, '~'));
+	vector<vector<char>> player2Ocean(10, vector<char>(10, '~'));
+	vector<vector<char>> player1Map(10, vector<char>(10, '~'));
+	vector<vector<char>> player2Map(10, vector<char>(10, '~'));	
 	vector<vector<char>> shipBank1 = {
         {'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
         {'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
@@ -287,16 +288,19 @@ int main(){
 				sleep(3);
 				continue;
 			}
-			if(player2Map.at(num).at(letterCord) != '#'){
+			if(player2Map.at(num).at(letterCord) != '~'){
 				cout <<BOLDGREEN<< "Hit!" <<RESET<< endl;
 				player1Ocean.at(num).at(letterCord) = 'X';
 				player2Map.at(num).at(letterCord) = 'X';
-				sleep(3);
+				//sleep(1);
 			} else {
 				cout <<BOLDRED<< "Miss!" <<RESET<< endl;
 				player1Ocean.at(num).at(letterCord) = 'O';
 				player2Map.at(num).at(letterCord) = 'O';
-				sleep(3);
+				//sleep(1);
+				//
+				//these 4 are commented out cuz it makes testing rly annoying
+				//
 			}
 		} else {
 			if(num >= player1Map.size() or letterCord >= player1Map.at(num).size()){
@@ -304,19 +308,78 @@ int main(){
 				sleep(3);
 				continue;
 			}
-			if(player1Map.at(num).at(letterCord) != '#'){
+			if(player1Map.at(num).at(letterCord) != '~'){
 				cout <<BOLDGREEN<< "Hit!" <<RESET<< endl;
 				player2Ocean.at(num).at(letterCord) = 'X';
 				player1Map.at(num).at(letterCord) = 'X';
-				sleep(3);
+				//sleep(1);
 			} else {
 				cout <<BOLDRED<< "Miss!" <<RESET<< endl;
 				player2Ocean.at(num).at(letterCord) = 'O';
 				player1Map.at(num).at(letterCord) = 'O';
-				sleep(3);
+				//sleep(1);
 			}
 		}
-		playerTurn = !playerTurn;
+		if(playerTurn){
+			for(size_t i = 0; i < player2Map.size(); i++){
+				auto it = find(player2Map.at(i).begin(), player2Map.at(i).end(), 'C');
+				if(player2Map.at(i).end() != it){ 
+					player1Win = false;
+					break;
+				}
+				it = find(player2Map.at(i).begin(), player2Map.at(i).end(), 'B');
+				if(player2Map.at(i).end() != it){ 
+					player1Win = false;
+					break;
+				}
+				it = find(player2Map.at(i).begin(), player2Map.at(i).end(), 'S');
+				if(player2Map.at(i).end() != it){ 
+					player1Win = false;
+					break;
+				}
+				it = find(player2Map.at(i).begin(), player2Map.at(i).end(), 'P');
+				if(player2Map.at(i).end() != it){ 
+					player1Win = false;
+					break;
+				}
+				player1Win = true;
+			}
+		}
+		if(!playerTurn){
+			for(size_t i = 0; i < player1Map.size(); i++){
+				auto it = find(player1Map.at(i).begin(), player1Map.at(i).end(), 'C');
+				if(player1Map.at(i).end() != it){ 
+					player2Win = false;
+					break;
+				}
+				it = find(player1Map.at(i).begin(), player1Map.at(i).end(), 'B');
+				if(player1Map.at(i).end() != it){ 
+					player2Win = false;
+					break;
+				}
+				it = find(player1Map.at(i).begin(), player1Map.at(i).end(), 'S');
+				if(player1Map.at(i).end() != it){ 
+					player2Win = false;
+					break;
+				}
+				it = find(player1Map.at(i).begin(), player1Map.at(i).end(), 'P');
+				if(player1Map.at(i).end() != it){ 
+					player2Win = false;
+					break;
+				}
+				player2Win = true;
+			}
+		}
+		if(player1Win or player2Win) break;
+
+
+		playerTurn = !playerTurn;	
 	}
-	cout << "swag" << endl;
+	system("clear");
+	if(player1Win){
+		cout << "Player1 wins" << endl;
+	} else {
+		cout << "Player2 wins" << endl;
+	}
+	sleep(3);
 }
