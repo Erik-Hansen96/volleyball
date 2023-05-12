@@ -11,9 +11,17 @@ void printMap(vector<vector<char>> grid){
 cout <<BOLDMAGENTA<< "  A B C D E F G H I J" <<RESET<< endl;
 	int numCol = 0;
 	for(const auto &row : grid){
-		cout <<BOLDBLUE<< numCol++ <<RESET<< " ";
+		cout << BOLDCYAN << numCol++ <<RESET<< " ";
 		for(const auto &col : row){
-			cout << col << " ";
+			if(col == 'X'){
+				cout << BOLDGREEN << col << " " << RESET;
+			} else if(col == 'O'){
+				cout << BOLDRED << col << " " << RESET;
+			} else if(col == '#') {
+			cout << BOLDBLUE << col << " " << RESET;
+			} else {
+			cout << BOLDWHITE << col << " " << RESET;
+			}
 		}
 		cout << endl;
 	}
@@ -148,7 +156,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		}
 
 		int orientation;
-		cout <<BOLDCYAN<< "1)\t\t\t\t       2)\n" << endl;
+		cout <<BOLDCYAN<< "1)\t\t\t\t       2)\n" << RESET << endl;
 		printOrient(or1, or2, display1, display2);
 		
 		cout << "\n\n\n\n";
@@ -271,7 +279,7 @@ int main(){
 				continue;
 			}
 			if(player2Map.at(num).at(letterCord) != '#'){
-				cout <<BOLDCYAN<< "Hit!" <<RESET<< endl;
+				cout <<BOLDGREEN<< "Hit!" <<RESET<< endl;
 				player1Ocean.at(num).at(letterCord) = 'X';
 				player2Map.at(num).at(letterCord) = 'X';
 				sleep(3);
@@ -288,7 +296,7 @@ int main(){
 				continue;
 			}
 			if(player1Map.at(num).at(letterCord) != '#'){
-				cout <<BOLDCYAN<< "Hit!" <<RESET<< endl;
+				cout <<BOLDGREEN<< "Hit!" <<RESET<< endl;
 				player2Ocean.at(num).at(letterCord) = 'X';
 				player1Map.at(num).at(letterCord) = 'X';
 				sleep(3);
