@@ -6,7 +6,6 @@
 #include "/public/read.h"
 #include <cstdlib>
 using namespace std;
-
 void printMap(vector<vector<char>> grid){
 	cout <<BOLDMAGENTA<< "  A B C D E F G H I J" <<RESET<< endl;
 	int numCol = 0;
@@ -169,6 +168,7 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 		
 		cout << "\n\n\n\n";
 		cout << "3)\t\t\t\t       4)\n" <<RESET<< endl;
+		
 		printOrient(or3, or4, display3, display4);
 		cout <<BOLDGREEN<< "\nChoose an orientation (1,2,3,4)" <<RESET<< endl;
 		cin >> orientation;
@@ -253,6 +253,7 @@ int main(){
 	addShip(player1Map, shipBank1, 1);
 	cout <<BOLDGREEN<< "You've added all your ships!" << endl;
 	cout << "\nNext player's turn to add ships" <<RESET<< endl;
+	//player1Map.at(DOWN).at(RIGHT)
 	sleep(3);
 	addShip(player2Map, shipBank2, 2);
 	//cout << "LETS FIGHT!!" << endl;
@@ -292,15 +293,12 @@ int main(){
 				cout <<BOLDGREEN<< "Hit!" <<RESET<< endl;
 				player1Ocean.at(num).at(letterCord) = 'X';
 				player2Map.at(num).at(letterCord) = 'X';
-				//sleep(1);
+				sleep(1);
 			} else {
 				cout <<BOLDRED<< "Miss!" <<RESET<< endl;
 				player1Ocean.at(num).at(letterCord) = 'O';
 				player2Map.at(num).at(letterCord) = 'O';
-				//sleep(1);
-				//
-				//these 4 are commented out cuz it makes testing rly annoying
-				//
+				sleep(1);
 			}
 		} else {
 			if(num >= player1Map.size() or letterCord >= player1Map.at(num).size()){
@@ -312,12 +310,12 @@ int main(){
 				cout <<BOLDGREEN<< "Hit!" <<RESET<< endl;
 				player2Ocean.at(num).at(letterCord) = 'X';
 				player1Map.at(num).at(letterCord) = 'X';
-				//sleep(1);
+				sleep(1);
 			} else {
 				cout <<BOLDRED<< "Miss!" <<RESET<< endl;
 				player2Ocean.at(num).at(letterCord) = 'O';
 				player1Map.at(num).at(letterCord) = 'O';
-				//sleep(1);
+				sleep(1);
 			}
 		}
 		if(playerTurn){
@@ -377,9 +375,9 @@ int main(){
 	}
 	system("clear");
 	if(player1Win){
-		cout << "Player1 wins" << endl;
+		cout << BOLDGREEN << "Player1 wins" << RESET << endl;
 	} else {
-		cout << "Player2 wins" << endl;
+		cout << BOLDGREEN << "Player2 wins" << RESET << endl;
 	}
 	sleep(3);
 }
