@@ -8,7 +8,7 @@
 using namespace std;
 
 void printMap(vector<vector<char>> grid){
-cout <<BOLDMAGENTA<< "  A B C D E F G H I J" <<RESET<< endl;
+	cout <<BOLDMAGENTA<< "  A B C D E F G H I J" <<RESET<< endl;
 	int numCol = 0;
 	for(const auto &row : grid){
 		cout << BOLDCYAN << numCol++ <<RESET<< " ";
@@ -32,12 +32,20 @@ void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2, bool dis
 		for(const auto &row : grid){
 			numCol++;
 			for(const auto &col : row){
-				cout << col << " ";
+				if(col == '#'){
+					cout << BOLDBLUE << col << " " << RESET;
+				} else {
+					cout << BOLDWHITE << col << " " << RESET;
+				}
 			}
 			cout << "\t\t\t";
 			if(display2){
 				for(const auto &col : grid2.at(numCol-1)){
-					cout << col << " ";
+					if(col == '#'){
+						cout << BOLDBLUE << col << " " << RESET;
+					} else {
+						cout << BOLDWHITE << col << " " << RESET;
+					}
 				}
 			}
 			cout << endl;
@@ -51,14 +59,15 @@ void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2, bool dis
 			cout << "\t\t\t";
 			if(display2){
 				for(const auto &col : grid2.at(numCol-1)){
-					cout << col << " ";
+					if(col == '#'){
+						cout << BOLDBLUE << col << " " << RESET;
+					} else {
+						cout << BOLDWHITE << col << " " << RESET;
+					}
 				}
 			}
 			cout << endl;
 		}
-
-
-
 	}
 }
 void printShips(vector<vector<char>> shipBank){
