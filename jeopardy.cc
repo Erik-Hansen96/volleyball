@@ -1,5 +1,5 @@
-#include "/public/colors.h"
-#include "/public/read.h"
+#include "colors.h"
+#include "read.h"
 #include <iostream>
 #include <iomanip>
 #include <chrono>
@@ -27,6 +27,8 @@ int main(){
 	int lineCount = 0;
 
 	//Getting the questions
+	
+	// There is somthing horribly wrong here, and its probably here, since some of the questions are bugging out..
 	while(getline(infile, line)){
 		if(line.empty()){continue;}
 		lineCount++;

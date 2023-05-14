@@ -2,10 +2,17 @@
 #include <vector>
 #include <cctype>
 #include <unistd.h>
-#include "/public/colors.h"
-#include "/public/read.h"
+#include "colors.h"
+#include "read.h"
 #include <cstdlib>
 using namespace std;
+
+// IT looks really good!
+// Just that really buggy, and I don't know what the issue is 
+// Like the TUI flashed like crazy
+// Just give this a quick patch through, and run it a couple of times
+// - Alex~
+
 void printMap(vector<vector<char>> grid){
 	cout <<BOLDMAGENTA<< "  A B C D E F G H I J" <<RESET<< endl;
 	int numCol = 0;
@@ -25,6 +32,8 @@ void printMap(vector<vector<char>> grid){
 		cout << endl;
 	}
 }
+
+// It looked really good in the TUI, I knew it was a pain to program.
 void printOrient(vector<vector<char>> grid, vector<vector<char>> grid2, bool display1, bool display2){
 	int numCol = 0;
 	if(display1){

@@ -1,5 +1,5 @@
-#include "/public/colors.h"
-#include "/public/read.h"
+#include "colors.h"
+#include "read.h"
 #include <iostream>
 #include <vector>
 #include <string>
