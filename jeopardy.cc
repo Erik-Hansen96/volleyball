@@ -22,6 +22,10 @@ int main(){
 	vector<Questions> questions;
 	string fileName = "questions.txt";
 	ifstream infile(fileName);
+	if(!infile.is_open()){
+		cerr <<BOLDRED<< "File failed to open!" <<RESET<< endl;
+		return 1;
+	}
 	Questions q;
 	string line;
 	int lineCount = 0;
