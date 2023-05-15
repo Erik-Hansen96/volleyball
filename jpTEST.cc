@@ -5,7 +5,7 @@ using namespace std;
 
 template <typename T>
 string inputCheck(T val){
-	if(typeid(val) == typeid(std::string)){ return "INVALID ANSWER INPUT";}
+	if(typeid(val) == typeid(char)){ return "INVALID ANSWER INPUT";}
 	if(val <=0){return "INVALID ANSWER INPUT";}
 	if(val >= 1 && val <=4){
 		return "VALID INPUT";
