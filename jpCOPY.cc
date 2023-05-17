@@ -15,7 +15,9 @@ struct Questions{
 	vector<string> answers;
 };
 
-int main(){
+
+
+int main(int argc, char* argv[]){
 	srand(time(NULL));
 	vector<Questions> questions;
 	string fileName = "questions.txt";
