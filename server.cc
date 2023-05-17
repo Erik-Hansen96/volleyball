@@ -24,6 +24,7 @@ string make_daytime_string()
 
 int main()
 {
+	string swag = "swag";
   try
   {
     boost::asio::io_context io_context;
@@ -33,13 +34,14 @@ int main()
 
     for (;;)
     {
-      tcp::iostream stream;
+      tcp::iostream client;
       boost::system::error_code ec;
-      acceptor.accept(stream.socket(), ec);
+	  cout << "Sum1 gotta connect, yo" << endl;
+
+      acceptor.accept(client.socket(), ec);
       if (!ec)
       {
-        stream << make_daytime_string();
-        //stream << "Tristan Meyers inducted into the Toy Hall of Fame!\n";
+		  cout << swag << endl;
       }
     }
   }

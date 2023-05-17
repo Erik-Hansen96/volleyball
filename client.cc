@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
 {
 	try
 	{
+		/*
 		if (argc != 3)
 		{
 			cerr << "Usage: daytime_client <host> <port>" << endl;
@@ -26,16 +27,20 @@ int main(int argc, char* argv[])
 		}
 
 		tcp::iostream s(argv[1], argv[2]); //[1] == host, [2] == port
-		if (!s) //Connection failed
+		*/
+		tcp::iostream server("localhost", "4834");
+		if (!server) //Connection failed
 		{
-			cout << "Unable to connect: " << s.error().message() << endl;
+			cout << "Unable to connect: " << server.error().message() << endl;
 			return EXIT_FAILURE;
 		}
-
-		string line;
-		//s >> line;
-		getline(s, line);
-		cout << line << endl;
+		string theirs;
+		string ours;
+		getline(server, theirs);
+		cout << theirs << endl;
+		cin >> ours;
+		server << ours;
+		cout << endl;
 	}
 	catch (exception& e)
 	{

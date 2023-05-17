@@ -5,6 +5,7 @@
 #include "colors.h"
 #include "read.h"
 #include <cstdlib>
+#include "common.h"
 using namespace std;
 
 // IT looks really good!
@@ -116,10 +117,10 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 
 		cout <<BOLDGREEN<< "\nWhere would do you want to place your ship?" <<RESET<< endl;
 		cout <<BOLDYELLOW<<"Enter a letter and number (like A5)" <<RESET<< endl;
-		char letter;
-		size_t num;
-		cin >> letter;
-		cin >> num;
+		char letter = read(cin);
+		size_t num = read(cin);
+		//cin >> letter;
+		//cin >> num;
 		letter = toupper(letter);
 		size_t letterCord = letter - 65;
 		system("clear");
@@ -239,57 +240,59 @@ void addShip(vector<vector<char>> &playerMap, vector<vector<char>> &shipBank, in
 	}
 }
 
-int main(){
+void battleship(vector<vector<char>> &player1Ocean, vector<vector<char>> &player2Ocean, vector<vector<char>> &player1Map, 
+vector<vector<char>> &player2Map, bool firstTime, bool playerTurn){
+
 	bool player1Win = false;
 	bool player2Win = false;
 	system("clear");
-	system("figlet -f big -c WELCOME TO BATTLESHIP!");
+	system("figlet -f big -c BATTLESHIP!");
 	sleep(5);
 	system("clear");
 	int winner = 1;
-	vector<vector<char>> player1Ocean(10, vector<char>(10, '~'));
-	vector<vector<char>> player2Ocean(10, vector<char>(10, '~'));
-	vector<vector<char>> player1Map(10, vector<char>(10, '~'));
-	vector<vector<char>> player2Map(10, vector<char>(10, '~'));	
-	vector<vector<char>> shipBank1 = {
-        {'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
-        {'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
-        {'C', 'B', 'B', 'S', 'S', 'S', ' ', ' ', ' ', ' '},
-        {'C', 'B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-        {'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
-    };
-	vector<vector<char>> shipBank2 = shipBank1;
-	addShip(player1Map, shipBank1, 1);
-	cout <<BOLDGREEN<< "You've added all your ships!" << endl;
-	cout << "\nNext player's turn to add ships" <<RESET<< endl;
-	//player1Map.at(DOWN).at(RIGHT)
-	sleep(3);
-	addShip(player2Map, shipBank2, 2);
-	//cout << "LETS FIGHT!!" << endl;
-	system("figlet -f big LETS FIGHT!!");
-	sleep(3);
-	bool playerTurn = true;
-	while(true){	
+
+	if(firstTime){
+		vector<vector<char>> shipBank1 = {
+    		{'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
+        	{'C', 'B', 'B', 'S', 'S', 'S', 'P', 'P', 'P', 'P'},
+        	{'C', 'B', 'B', 'S', 'S', 'S', ' ', ' ', ' ', ' '},
+        	{'C', 'B', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        	{'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+    	};
+		
+		vector<vector<char>> shipBank2 = shipBank1;
+		addShip(player1Map, shipBank1, 1);
+		cout <<BOLDGREEN<< "You've added all your ships!" << endl;
+		cout << "\nNext player's turn to add ships" <<RESET<< endl;
+		//player1Map.at(DOWN).at(RIGHT)
+		sleep(3);
+		addShip(player2Map, shipBank2, 2);
+		//cout << "LETS FIGHT!!" << endl;
+		system("figlet -f big LETS FIGHT!!");
+		sleep(3);
+		return;	
+	}
+
+	int it = 3;
+	while(it>0){	
 		system("clear");
 		if(playerTurn){
-			cout <<BOLDYELLOW<< "PLAYER 1\n" <<RESET<< endl;	
+			cout <<BOLDYELLOW<< "PLAYER 1\tYOU HAVE " << it << " SHOTS LEFT!\n" <<RESET<< endl;	
 			printMap(player1Ocean);
 			cout << endl;
 			printMap(player1Map);
 			cout << endl;
 
 		} else {
-			cout <<BOLDYELLOW<< "PLAYER 2\n" <<RESET<< endl;
+			cout <<BOLDYELLOW<< "PLAYER 2\tYOU HAVE " << it << " SHOTS LEFT!\n" <<RESET<< endl;	
 			printMap(player2Ocean);
 			cout << endl;
 			printMap(player2Map);
 			cout << endl;
 		}
 		cout <<BOLDYELLOW<< "\nEnter a letter and number to strike!" <<RESET<< endl;
-		char letter;
-		size_t num;
-		cin >> letter;
-		cin >> num;
+		char letter = read(cin);
+		size_t num = read(cin);
 		letter = toupper(letter);
 		size_t letterCord = letter - 65;
 		if(playerTurn){
@@ -327,66 +330,16 @@ int main(){
 				sleep(1);
 			}
 		}
-		if(playerTurn){
-			for(size_t i = 0; i < player2Map.size(); i++){
-				auto it = find(player2Map.at(i).begin(), player2Map.at(i).end(), 'C');
-				if(player2Map.at(i).end() != it){ 
-					player1Win = false;
-					break;
-				}
-				it = find(player2Map.at(i).begin(), player2Map.at(i).end(), 'B');
-				if(player2Map.at(i).end() != it){ 
-					player1Win = false;
-					break;
-				}
-				it = find(player2Map.at(i).begin(), player2Map.at(i).end(), 'S');
-				if(player2Map.at(i).end() != it){ 
-					player1Win = false;
-					break;
-				}
-				it = find(player2Map.at(i).begin(), player2Map.at(i).end(), 'P');
-				if(player2Map.at(i).end() != it){ 
-					player1Win = false;
-					break;
-				}
-				player1Win = true;
-			}
-		}
-		if(!playerTurn){
-			for(size_t i = 0; i < player1Map.size(); i++){
-				auto it = find(player1Map.at(i).begin(), player1Map.at(i).end(), 'C');
-				if(player1Map.at(i).end() != it){ 
-					player2Win = false;
-					break;
-				}
-				it = find(player1Map.at(i).begin(), player1Map.at(i).end(), 'B');
-				if(player1Map.at(i).end() != it){ 
-					player2Win = false;
-					break;
-				}
-				it = find(player1Map.at(i).begin(), player1Map.at(i).end(), 'S');
-				if(player1Map.at(i).end() != it){ 
-					player2Win = false;
-					break;
-				}
-				it = find(player1Map.at(i).begin(), player1Map.at(i).end(), 'P');
-				if(player1Map.at(i).end() != it){ 
-					player2Win = false;
-					break;
-				}
-				player2Win = true;
-			}
-		}
-		if(player1Win or player2Win) break;
-
-
-		playerTurn = !playerTurn;	
+		it--;
 	}
 	system("clear");
 	if(player1Win){
 		cout << BOLDGREEN << "Player1 wins" << RESET << endl;
-	} else {
+	} else if(player2Win) {
 		cout << BOLDGREEN << "Player2 wins" << RESET << endl;
+	} else {
+		system("figlet -f big Jeopardy!");
 	}
 	sleep(3);
+	system("clear");
 }
